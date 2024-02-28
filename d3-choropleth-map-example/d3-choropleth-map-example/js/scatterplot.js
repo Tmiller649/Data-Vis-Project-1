@@ -11,8 +11,8 @@ class Scatterplot {
     // you might want to use getter and setter methods for individual attributes
     this.config = {
       parentElement: _config.parentElement,
-      containerWidth: _config.containerWidth || 600,
-      containerHeight: _config.containerHeight || 400,
+      containerWidth: _config.containerWidth || 500,
+      containerHeight: _config.containerHeight || 500,
       margin: _config.margin || {top: 25, right: 20, bottom: 20, left: 35},
       generate: _config.generate|| false
     }
@@ -42,8 +42,10 @@ class Scatterplot {
 
     // Initialize scales
     vis.colorScale = d3.scaleOrdinal()
-        .range(['#FFFF00', '0000FF', '#FF0000', '#7CFC00']) //light blue to dark blue
+        .range(['#ffe119', '#000075', '#3cb44b', '#e6194B']) //light blue to dark blue
         .domain(['Rural','Small City','Suburban', 'Urban']);
+        
+
 
     vis.xScale = d3.scaleLinear()
         .range([0, vis.width]);
@@ -51,17 +53,22 @@ class Scatterplot {
     vis.yScale = d3.scaleLinear()
         .range([vis.height, 0]);
 
+    // vis.brush = d3.svg.brush()
+    //     .x(vis.xScale)
+    //     .on("brush", brushmove)
+    //     .on("brushend", brushend);
+
     // Initialize axes
     vis.xAxis = d3.axisBottom(vis.xScale)
         .ticks(6)
         .tickSize(-vis.height - 10)
-        .tickPadding(10)
+        .tickPadding(5)
         // .tickFormat(d => d + ' km');
 
     vis.yAxis = d3.axisLeft(vis.yScale)
         .ticks(6)
         .tickSize(-vis.width - 10)
-        .tickPadding(10);
+        .tickPadding(5);
 
     // Define size of SVG drawing area
     vis.svg = d3.select(vis.config.parentElement)
@@ -107,100 +114,20 @@ class Scatterplot {
    */
   updateVis() {
     let vis = this;
-    
+    console.log()
     // Specificy accessor functions
+    let xValueDataString = d3.select("#Xaxis").node().value;
+    let yValueDataString = d3.select("#Yaxis").node().value;
     vis.colorValue = d => d.urban_rural_status;
-    var q = d3.select("#Xaxis").property("value")
-    if(d3.select("#Xaxis").node().value == "poverty_perc"){
-        vis.xValue = d => d.poverty_perc;
-    }
-    else if(d3.select("#Xaxis").node().value == "median_household_income"){
-        vis.xValue = d => d.median_household_income;
-    }
-    else if(d3.select("#Xaxis").node().value == "median_household_income"){
-        vis.xValue = d => d.median_household_income;
-    }
-    else if(d3.select("#Xaxis").node().value == "education_less_than_high_school_percent"){
-        vis.xValue = d => d.education_less_than_high_school_percent;
-    }
-    else if(d3.select("#Xaxis").node().value == "park_access"){
-        vis.xValue = d => d.park_access;
-    }
-    else if(d3.select("#Xaxis").node().value == "percent_inactive"){
-        vis.xValue = d => d.percent_inactive;
-    }
-    else if(d3.select("#Xaxis").node().value == "percent_smoking"){
-        vis.xValue = d => d.percent_smoking;
-    }
-    else if(d3.select("#Xaxis").node().value == "elderly_percentage"){
-        vis.xValue = d => d.elderly_percentage;
-    }
-    else if(d3.select("#Xaxis").node().value == "number_of_hospitals"){
-        vis.xValue = d => d.number_of_hospitals;
-    }
-    else if(d3.select("#Xaxis").node().value == "number_of_primary_care_physicians"){
-        vis.xValue = d => d.median_household_income;
-    }
-    else if(d3.select("#Xaxis").node().value == "percent_no_heath_insurance"){
-        vis.xValue = d => d.percent_heath_insurance;
-    }
-    else if(d3.select("#Xaxis").node().value == "percent_high_blood_pressure"){
-        vis.xValue = d => d.percent_high_blood_pressure;
-    }
-    else if(d3.select("#Xaxis").node().value == "percent_stroke"){
-        vis.xValue = d => d.percent_stroke;
-    }
-    else if(d3.select("#Xaxis").node().value == "percent_high_cholesterol"){
-        vis.xValue = d => d.percent_high_cholesterol;
-    }
-///Y VALUE
-if(d3.select("#Yaxis").node().value == "poverty_perc"){
-    vis.yValue = d => d.poverty_perc;
-}
-else if(d3.select("#Yaxis").node().value == "median_household_income"){
-    vis.yValue = d => d.median_household_income;
-}
-else if(d3.select("#Yaxis").node().value == "median_household_income"){
-    vis.yValue = d => d.median_household_income;
-}
-else if(d3.select("#Yaxis").node().value == "education_less_than_high_school_percent"){
-    vis.yValue = d => d.education_less_than_high_school_percent;
-}
-else if(d3.select("#Yaxis").node().value == "park_access"){
-    vis.yValue = d => d.park_access;
-}
-else if(d3.select("#Yaxis").node().value == "percent_inactive"){
-    vis.yValue = d => d.percent_inactive;
-}
-else if(d3.select("#Yaxis").node().value == "percent_smoking"){
-    vis.yValue = d => d.percent_smoking;
-}
-else if(d3.select("#Yaxis").node().value == "elderly_percentage"){
-    vis.yValue = d => d.elderly_percentage;
-}
-else if(d3.select("#Yaxis").node().value == "number_of_hospitals"){
-    vis.yValue = d => d.number_of_hospitals;
-}
-else if(d3.select("#Yaxis").node().value == "number_of_primary_care_physicians"){
-    vis.yValue = d => d.median_household_income;
-}
-else if(d3.select("#Yaxis").node().value == "percent_no_heath_insurance"){
-    vis.yValue = d => d.percent_heath_insurance;
-}
-else if(d3.select("#Yaxis").node().value == "percent_high_blood_pressure"){
-    vis.yValue = d => d.percent_high_blood_pressure;
-}
-else if(d3.select("#Yaxis").node().value == "percent_stroke"){
-    vis.yValue = d => d.percent_stroke;
-}
-else if(d3.select("#Yaxis").node().value == "percent_high_cholesterol"){
-    vis.yValue = d => d.percent_high_cholesterol;
-}
+    vis.xValue = d => d[xValueDataString];
+    vis.yValue = d => d[yValueDataString];
+    let xExtent = d3.extent(vis.data, vis.xValue);
+    let yExtent = d3.extent(vis.data, vis.yValue);
 
 
     // Set the scale input domains
-    vis.xScale.domain([0, d3.max(vis.data, vis.xValue)]);
-    vis.yScale.domain([0, d3.max(vis.data, vis.yValue)]);
+    vis.xScale.domain(xExtent);
+    vis.yScale.domain(yExtent);
 
     vis.renderVis();
   }
@@ -213,7 +140,7 @@ else if(d3.select("#Yaxis").node().value == "percent_high_cholesterol"){
     let vis = this;
 
     // Add circles
-    vis.chart.selectAll('.point')
+    var point = vis.chart.selectAll('.point')
         .data(vis.data)
         .enter()
       .append('circle')
@@ -222,6 +149,7 @@ else if(d3.select("#Yaxis").node().value == "percent_high_cholesterol"){
         .attr('cy', d => vis.yScale(vis.yValue(d)))
         .attr('cx', d => vis.xScale(vis.xValue(d)))
         .attr('fill', d => vis.colorScale(vis.colorValue(d)));
+
     
     // Update the axes/gridlines
     // We use the second .call() to remove the axis and just show gridlines
@@ -231,6 +159,28 @@ else if(d3.select("#Yaxis").node().value == "percent_high_cholesterol"){
 
     vis.yAxisG
         .call(vis.yAxis)
-        .call(g => g.select('.domain').remove())
+        .call(g => g.select('.domain').remove());
+
+        // Add brushing
+    d3.select("#scatterplot")
+        .data(vis.data)
+        .call( d3.brush()                     // Add the brush feature using the d3.brush function
+        .extent( [ [0,0], [vis.width, vis.height] ] ) 
+        .on("start brush", updateChart)    // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
+)
+    function updateChart() {
+    let extent = d3.brushSelection(this)
+    point.classed("selected", function(d){return isBrushed(extent,  vis.xScale(vis.xValue(d)), vis.yScale(vis.yValue(d))) } )
+  }
+
+  // A function that return TRUE or FALSE according if a dot is in the selection or not
+  function isBrushed(brush_coords, cx, cy) {
+    var x0 = brush_coords[0][0],
+        x1 = brush_coords[1][0],
+        y0 = brush_coords[0][1],
+        y1 = brush_coords[1][1];
+   return x0 -25 <= cx && cx <= x1 -25 && y0 -25 <= cy && cy <= y1 - 25;    // This return TRUE or FALSE depending on if the points is in the selected area
+}
+
   }
 }

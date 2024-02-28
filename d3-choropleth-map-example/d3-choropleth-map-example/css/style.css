@@ -30,6 +30,22 @@
     fill: orange;
 }
 
+.mapsContainer { 
+    width: 50%; 
+} 
+.mapContainer { 
+    float: left; 
+    width: 50%; 
+} 
+.map1 { 
+    margin-left: 50%; 
+} 
+.map2 { 
+    margin-left: 50%; 
+}
+
+
+
 #tooltip {
   position: absolute;
   display: none;
@@ -47,3 +63,9 @@
   font-size: 14px;
   font-weight: 600;
 }
+
+.selected {
+    opacity: 1 !important;
+    stroke: black;
+    stroke-width: 1px;
+  }

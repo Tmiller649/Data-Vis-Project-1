@@ -6,68 +6,67 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h1>Health in the USA Project</h1>
-    <h2>By: Terrance Miller</h2>
+    <h1 text-align=center>Health in the USA Project</h1>
+    <h2 text-align=center>By: Terrance Miller</h2>
 
-    <div class="viz" id="choroplethMap"></div>
-
+    <!-- <div class="mapsContainer"> -->
+        <div class="mapContainer">
+            <div class="dropdownMap">
+                <label for="MapData">Generate Map 1</label>
+                <select name="MapData1" id="MapData1">
+                    <option value="poverty_perc">Poverty Percentage</option>
+                    <option value="median_household_income" selected>Median household income</option>
+                    <option value="education_less_than_high_school_percent">Didn't Graduate High School</option>
+                    <option value="air_quality">Air Quality</option>
+                    <option value="park_access">Percent With Park Acess</option>
+                    <option value="percent_inactive">Physically Inactive Percentage</option>
+                    <option value="percent_smoking">Smoking Percentage</option>
+                    <option value="elderly_percentage">Elderly Percentage</option>
+                    <option value="number_of_hospitals">Number of Hospitals</option>
+                    <option value="number_of_primary_care_physicians">Number of Primary Care Physicians</option>
+                    <option value="percent_no_heath_insurance">No Health Insurance Percentage</option>
+                    <option value="percent_high_blood_pressure">High Blood Pressure Percentage</option>
+                    <option value="percent_coronary_heart_disease">Coronary Heart Disease Percentage</option>
+                    <option value="percent_stroke">Stroke Percentage</option>
+                    <option value="percent_high_cholesterol">High Cholesterol Percentage</option>
+                </select>
+            </div>
+            <button type="button" id="GenerateMap1">Generate Map 1</button>
+            <div class="maps"id="choroplethMap1"></div>
+        </div>
+        <div class="mapContainer">
+            <div class="dropdownMap">
+                <label for="MapData2">Generate Map 2</label>
+                <select name="MapData2" id="MapData2">
+                    <option value="poverty_perc">Poverty Percentage</option>
+                    <option value="median_household_income" selected>Median household income</option>
+                    <option value="education_less_than_high_school_percent">Didn't Graduate High School</option>
+                    <option value="air_quality">Air Quality</option>
+                    <option value="park_access">Percent With Park Acess</option>
+                    <option value="percent_inactive">Physically Inactive Percentage</option>
+                    <option value="percent_smoking">Smoking Percentage</option>
+                    <option value="elderly_percentage">Elderly Percentage</option>
+                    <option value="number_of_hospitals">Number of Hospitals</option>
+                    <option value="number_of_primary_care_physicians">Number of Primary Care Physicians</option>
+                    <option value="percent_no_heath_insurance">No Health Insurance Percentage</option>
+                    <option value="percent_high_blood_pressure">High Blood Pressure Percentage</option>
+                    <option value="percent_coronary_heart_disease">Coronary Heart Disease Percentage</option>
+                    <option value="percent_stroke">Stroke Percentage</option>
+                    <option value="percent_high_cholesterol">High Cholesterol Percentage</option>
+                </select>
+            </div>
+            <button type="button" id="GenerateMap2">Generate Map 2</button>
+            <div class="maps"id="choroplethMap2"></div>
+        </div>
+        
+    <!-- </div> -->
     <svg height="5" width="5" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="lightstripe" patternUnits="userSpaceOnUse" width="5" height="5"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc1JyBoZWlnaHQ9JzUnPgogIDxyZWN0IHdpZHRoPSc1JyBoZWlnaHQ9JzUnIGZpbGw9J3doaXRlJy8+CiAgPHBhdGggZD0nTTAgNUw1IDBaTTYgNEw0IDZaTS0xIDFMMSAtMVonIHN0cm9rZT0nIzg4OCcgc3Ryb2tlLXdpZHRoPScxJy8+Cjwvc3ZnPg==" x="0" y="0" width="5" height="5"> </image> </pattern> </defs></svg>
 
     <div id="tooltip"></div>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.0.0/d3.min.js"></script>
 
-    <!-- <div id="mapdata">
-        <input type="radio" id="poverty_perc" name="mapselect" value="poverty_perc" checked="checked">
-        <label for="poverty_perc">Poverty Percentage</label><br>
-        <input type="radio" id="median" name="mapselect" value="median_household_income">
-        <label for="median">Median Household Income</label><br>
-        <input type="radio" id="education" name="mapselect" value="education_less_than_high_school_percent">
-        <label for="education">Didn't Graduate High School</label><br>
-        <input type="radio" id="air" name="mapselect" value="air_quality">
-        <label for="air">Air Quality</label><br>
-        <input type="radio" id="park" name="mapselect" value="park_access">
-        <label for="park">Park Access</label><br>
-        <input type="radio" id="inactive" name="mapselect" value="percent_inactive">
-        <label for="inactive">Physically Inactive Percentage</label><br>
-        <input type="radio" id="smoke" name="mapselect" value="percent_smoking">
-        <label for="smoke">Smoking Percentage</label><br>
-        <input type="radio" id="Elder" name="mapselect" value="elderly_percentage">
-        <label for="Elder">Elderly Percentage</label><br>
-        <input type="radio" id="hospital" name="mapselect" value="number_of_hospitals">
-        <label for="hospital">Number of Hospitals</label><br>
-        <input type="radio" id="care" name="mapselect" value="number_of_primary_care_physicians">
-        <label for="care">Number of Primary Care Physicians</label><br>
-        <input type="radio" id="heath" name="mapselect" value="percent_no_heath_insurance">
-        <label for="heath">No Health Insurance Percentage</label><br>
-        <input type="radio" id="blood" name="mapselect" value="percent_high_blood_pressure">
-        <label for="blood">High Blood Pressure Percentage</label><br>
-        <input type="radio" id="heart" name="mapselect" value="percent_coronary_heart_disease">
-        <label for="heart">Coronary Heart Disease Percentage</label><br>
-        <input type="radio" id="stroke" name="mapselect" value="percent_stroke">
-        <label for="stroke">Stroke Percentage</label><br>
-        <input type="radio" id="chol" name="mapselect" value="percent_high_cholesterol">
-        <label for="chol">High Cholesterol Percentage</label><br>
-    </div> -->
-    <div class="dropdownMap">
-        <label for="MapData">Map Data</label>
-        <select name="MapData" id="MapData">
-            <option value="poverty_perc">Poverty Percentage</option>
-            <option value="median_household_income" selected>Median household income</option>
-            <option value="education_less_than_high_school_percent">Didn't Graduate High School</option>
-            <option value="air_quality">Air Quality</option>
-            <option value="park_access">Percent With Park Acess</option>
-            <option value="percent_inactive">Physically Inactive Percentage</option>
-            <option value="percent_smoking">Smoking Percentage</option>
-            <option value="elderly_percentage">Elderly Percentage</option>
-            <option value="number_of_hospitals">Number of Hospitals</option>
-            <option value="number_of_primary_care_physicians">Number of Primary Care Physicians</option>
-            <option value="percent_no_heath_insurance">No Health Insurance Percentage</option>
-            <option value="percent_high_blood_pressure">High Blood Pressure Percentage</option>
-            <option value="percent_coronary_heart_disease">Coronary Heart Disease Percentage</option>
-            <option value="percent_stroke">Stroke Percentage</option>
-            <option value="percent_high_cholesterol">High Cholesterol Percentage</option>
-        </select>
-    </div>
+
+
     <form class="Graph1">
         <!-- <div class="GraphSelect">
             <input type="radio" id="scatter" name="grphselect" value="Scatter Plot">
@@ -115,12 +114,13 @@
                 <option value="percent_high_cholesterol">High Cholesterol Percentage</option>
             </select>
         </div>
-        <button type="button" id="Generate">Generate</button>
+        <button type="button" id="GeneratePlot">Generate Scatterplot</button>
     </form>
     
 
-    <svg id="scatterplot"></svg>
+    <svg class="scatterplot" id="scatterplot"></svg>
     <!-- <svg id="barchart"></svg> -->
+
 
     <script src="js/scatterplot.js"></script>
     <script src="js/barchart.js"></script>
@@ -131,6 +131,7 @@
     <!-- <script src="js/topojson.v3.js"></script> -->
     <script src="js/choroplethMap.js"></script>
     <script src="js/main.js"></script>
+    
     
 </body>
 </html>
