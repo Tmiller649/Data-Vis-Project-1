@@ -37,11 +37,11 @@
     text-align: center;
 }
 .mapContainer {
-    /* display: inline-block; */
     border: 1px solid red;
     vertical-align: middle;
     height:400px;
     float: left;
+    padding-bottom: 50px;
 }
 
 
@@ -69,14 +69,11 @@
     stroke-width: 1px;
   }
 
-   body {
-        font-family: Arial, sans-serif;
-      }
-      .axis-label {
-        font-size: 14px;
-      }
 
-      /* Tooltip */
+.axis-label {
+  font-size: 14px;
+}
+
 #tooltip2 {
     position: absolute;
     display: none;

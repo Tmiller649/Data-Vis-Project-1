@@ -4,6 +4,7 @@
 
 
 ////////////////////////////////////////
+//Initalize two default maps to help users understand the projects functionality
 Promise.all([
   d3.json('data/counties-10m.json'),
   d3.csv('data/national_health_data.csv')
@@ -49,6 +50,7 @@ Promise.all([
 })
 .catch(error => console.error(error));
 ///////////////////////////////////////////////
+//Generate button to generate your scatter and bar plot
 d3.select('#GeneratePlot').on('click', function() {
   d3.selectAll("#scatterplot > *").remove();
   d3.selectAll("#barchart > *").remove();
@@ -80,7 +82,7 @@ d3.select('#GeneratePlot').on('click', function() {
 
 });
 
-
+//Generate button to change first map
 d3.select('#GenerateMap1').on('click', function() {
   d3.selectAll("#choroplethMap1 > *").remove();
   Promise.all([
@@ -126,6 +128,7 @@ d3.select('#GenerateMap1').on('click', function() {
   .catch(error => console.error(error));
 })
 
+//generate button to change second map
 d3.select('#GenerateMap2').on('click', function() {
   d3.selectAll("#choroplethMap2 > *").remove();
   Promise.all([

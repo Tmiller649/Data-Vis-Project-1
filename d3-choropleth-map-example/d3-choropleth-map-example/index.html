@@ -9,10 +9,12 @@
     <h1 text-align=center>Health in the USA Project</h1>
     <h2 text-align=center>By: Terrance Miller</h2>
     <div class="source">
-        Source: Data from <a href="https://vancouvertrails.com/trails/">vancouvertrails.com</a>
+        Source: Data from <a href="https://www.cdc.gov/dhdsp/maps/atlas/index.htm">www.cdc.gov</a>
+    </div>
+    <div class="source">
+        Source: js version used <a href="https://cdnjs.cloudflare.com/ajax/libs/d3/6.0.0/d3.min.js">Version 6.0</a>
     </div>
 
-    <!-- <div class="mapsContainer"> -->
         <div class="mapContainer">
             <div class="dropdownMap">
                 <label for="MapData">Generate Map 1</label>
@@ -62,9 +64,7 @@
             <div class="maps"id="choroplethMap2"></div>
         </div>
         
-    <!-- </div> -->
     <svg height="5" width="5" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="lightstripe" patternUnits="userSpaceOnUse" width="5" height="5"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc1JyBoZWlnaHQ9JzUnPgogIDxyZWN0IHdpZHRoPSc1JyBoZWlnaHQ9JzUnIGZpbGw9J3doaXRlJy8+CiAgPHBhdGggZD0nTTAgNUw1IDBaTTYgNEw0IDZaTS0xIDFMMSAtMVonIHN0cm9rZT0nIzg4OCcgc3Ryb2tlLXdpZHRoPScxJy8+Cjwvc3ZnPg==" x="0" y="0" width="5" height="5"> </image> </pattern> </defs></svg>
-
     <div id="tooltip"></div>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.0.0/d3.min.js"></script>
 
@@ -111,44 +111,35 @@
                 <option value="percent_high_cholesterol">High Cholesterol Percentage</option>
             </select>
         </div>
+        <div class="dropdownBar">
+            <label for="barchartAxis">Bar Chart Value</label>
+            <select name="barchartAxis" id="barchartAxis">
+                <option value="poverty_perc">Poverty Percentage</option>
+                <option value="median_household_income">Median household income</option>
+                <option value="education_less_than_high_school_percent">Didn't Graduate High School</option>
+                <option value="air_quality">Air Quality</option>
+                <option value="park_access">Percent With Park Acess</option>
+                <option value="percent_inactive">Physically Inactive Percentage</option>
+                <option value="percent_smoking">Smoking Percentage</option>
+                <option value="elderly_percentage">Elderly Percentage</option>
+                <option value="number_of_hospitals">Number of Hospitals</option>
+                <option value="number_of_primary_care_physicians">Number of Primary Care Physicians</option>
+                <option value="percent_no_heath_insurance">No Health Insurance Percentage</option>
+                <option value="percent_high_blood_pressure">High Blood Pressure Percentage</option>
+                <option value="percent_coronary_heart_disease">Coronary Heart Disease Percentage</option>
+                <option value="percent_stroke">Stroke Percentage</option>
+                <option value="percent_high_cholesterol">High Cholesterol Percentage</option>
+            </select>
+        </div>
         <button type="button" id="GeneratePlot">Generate Charts</button>        
         <svg class="scatterplot" id="scatterplot"></svg>
-    </form>
-    <div class="dropdownBar">
-        <label for="barchartAxis">Bar Chart Value</label>
-        <select name="barchartAxis" id="barchartAxis">
-            <option value="poverty_perc">Poverty Percentage</option>
-            <option value="median_household_income">Median household income</option>
-            <option value="education_less_than_high_school_percent">Didn't Graduate High School</option>
-            <option value="air_quality">Air Quality</option>
-            <option value="park_access">Percent With Park Acess</option>
-            <option value="percent_inactive">Physically Inactive Percentage</option>
-            <option value="percent_smoking">Smoking Percentage</option>
-            <option value="elderly_percentage">Elderly Percentage</option>
-            <option value="number_of_hospitals">Number of Hospitals</option>
-            <option value="number_of_primary_care_physicians">Number of Primary Care Physicians</option>
-            <option value="percent_no_heath_insurance">No Health Insurance Percentage</option>
-            <option value="percent_high_blood_pressure">High Blood Pressure Percentage</option>
-            <option value="percent_coronary_heart_disease">Coronary Heart Disease Percentage</option>
-            <option value="percent_stroke">Stroke Percentage</option>
-            <option value="percent_high_cholesterol">High Cholesterol Percentage</option>
-        </select>
         <svg class="barchart" id="barchart"></svg>
-    </div>
-
-
-
-    
-    <!-- <svg id="barchart"></svg> -->
+    </form>
 
 
     <script src="js/scatterplot.js"></script>
     <script src="js/barchart.js"></script>
     <script src="js/topojson.v3.js"></script>
-
-    
-    <!-- <script src="js/d3.v6.min.js"></script> -->
-    <!-- <script src="js/topojson.v3.js"></script> -->
     <script src="js/choroplethMap.js"></script>
     <script src="js/main.js"></script>
     

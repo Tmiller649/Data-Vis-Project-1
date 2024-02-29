@@ -21,23 +21,16 @@ class ChoroplethMap {
     this.us = _data;
 
     this.active = d3.select(null);
-
-    //this.initVis();
   }
-  
-  /**
-   * We initialize scales/axes and append static elements, such as axis titles.
-   */
+
   initVis(mapDataString, colorRange) {
     let vis = this;
-
-    //let mapDataString = d3.select("#MapData").node().value;
 
     vis.colorScale = d3.scaleLinear()
     .domain(d3.extent(vis.data.objects.counties.geometries, d => d.properties[mapDataString]))
       .range(colorRange)
       .interpolate(d3.interpolateHcl);
-    // Calculate inner chart size. Margin specifies the space around the actual chart.
+
     vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
     vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
 
@@ -50,8 +43,8 @@ class ChoroplethMap {
 
     vis.svg.append('rect')
             .attr('class', 'background center-container')
-            .attr('height', vis.config.containerWidth ) //height + margin.top + margin.bottom)
-            .attr('width', vis.config.containerHeight) //width + margin.left + margin.right)
+            .attr('height', vis.config.containerWidth )
+            .attr('width', vis.config.containerHeight)
             .on('click', vis.clicked);
 
   
@@ -98,8 +91,6 @@ class ChoroplethMap {
                   .on('mouseleave', () => {
                     d3.select('#tooltip').style('display', 'none');
                   });
-
-
 
     vis.g.append("path")
                 .datum(topojson.mesh(vis.us, vis.us.objects.states, function(a, b) { return a !== b; }))

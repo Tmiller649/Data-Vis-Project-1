@@ -6,9 +6,7 @@ class Scatterplot {
    * @param {Array}
    */
   constructor(_config, _data) {
-    // Configuration object with defaults
-    // Important: depending on your vis and the type of interactivity you need
-    // you might want to use getter and setter methods for individual attributes
+
     this.config = {
       parentElement: _config.parentElement,
       containerWidth: _config.containerWidth || 700,
@@ -20,23 +18,10 @@ class Scatterplot {
     this.initVis();
   }
   
-  /**
-   * This function contains all the code that gets excecuted only once at the beginning.
-   * (can be also part of the class constructor)
-   * We initialize scales/axes and append static elements, such as axis titles.
-   * If we want to implement a responsive visualization, we would move the size
-   * specifications to the updateVis() function.
-   */
-  initVis() {
-    // We recommend avoiding simply using the this keyword within complex class code
-    // involving SVG elements because the scope of this will change and it will cause
-    // undesirable side-effects. Instead, we recommend creating another variable at
-    // the start of each function to store the this-accessor
-    let vis = this;
 
-    // Calculate inner chart size. Margin specifies the space around the actual chart.
-    // You need to adjust the margin config depending on the types of axis tick labels
-    // and the position of axis titles (margin convetion: https://bl.ocks.org/mbostock/3019563)
+  initVis() {
+
+    let vis = this;
     vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
     vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
 
@@ -53,17 +38,11 @@ class Scatterplot {
     vis.yScale = d3.scaleLinear()
         .range([vis.height, 0]);
 
-    // vis.brush = d3.svg.brush()
-    //     .x(vis.xScale)
-    //     .on("brush", brushmove)
-    //     .on("brushend", brushend);
-
     // Initialize axes
     vis.xAxis = d3.axisBottom(vis.xScale)
         .ticks(6)
         .tickSize(-vis.height - 10)
         .tickPadding(5)
-        // .tickFormat(d => d + ' km');
 
     vis.yAxis = d3.axisLeft(vis.yScale)
         .ticks(6)
@@ -103,19 +82,13 @@ class Scatterplot {
         .attr('x', 0)
         .attr('y', 0)
         .attr('dy', '.71em')
-        // .text('Hours');
     vis.updateVis();
   }
 
-  /**
-   * This function contains all the code to prepare the data before we render it.
-   * In some cases, you may not need this function but when you create more complex visualizations
-   * you will probably want to organize your code in multiple functions.
-   */
   updateVis() {
     let vis = this;
     console.log()
-    // Specificy accessor functions
+    //Get value from dropdown menu
     let xValueDataString = d3.select("#Xaxis").node().value;
     let yValueDataString = d3.select("#Yaxis").node().value;
     vis.colorValue = d => d.urban_rural_status;
@@ -132,10 +105,6 @@ class Scatterplot {
     vis.renderVis();
   }
 
-  /**
-   * This function contains the D3 code for binding data to visual elements.
-   * We call this function every time the data or configurations change.
-   */
   renderVis() {
     let vis = this;
 
@@ -164,9 +133,9 @@ class Scatterplot {
         // Add brushing
     d3.select("#scatterplot")
         .data(vis.data)
-        .call( d3.brush()                     // Add the brush feature using the d3.brush function
+        .call( d3.brush()                     
         .extent( [ [0,0], [vis.width, vis.height] ] ) 
-        .on("start brush", updateChart)    // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
+        .on("start brush", updateChart)    
 )
     function updateChart() {
     let extent = d3.brushSelection(this)
@@ -179,7 +148,7 @@ class Scatterplot {
         x1 = brush_coords[1][0],
         y0 = brush_coords[0][1],
         y1 = brush_coords[1][1];
-   return x0 -25 <= cx && cx <= x1 -25 && y0 -25 <= cy && cy <= y1 - 25;    // This return TRUE or FALSE depending on if the points is in the selected area
+   return x0 -25 <= cx && cx <= x1 -25 && y0 -25 <= cy && cy <= y1 - 25;    
 }
 
   }

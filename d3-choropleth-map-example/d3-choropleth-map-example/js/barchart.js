@@ -6,7 +6,6 @@ class Barchart {
    * @param {Array}
    */
   constructor(_config, _data) {
-    // Configuration object with defaults
     this.config = {
       parentElement: _config.parentElement,
       colorScale: _config.colorScale,
@@ -28,11 +27,10 @@ class Barchart {
     vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
     vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
 
-  
-    // Process the data to calculate average percent_stroke for each urban_rural_status category
+    //Calculates average data based on the 4 regions
     const averages = d3.rollup(this.data, v => d3.mean(v, d => d[yValueDataString]), d => d.urban_rural_status);
 
-    // Convert averages object to array for easier manipulation
+    //moves averages in an array connected to urban_rural_status to use later
     const averageArray = Array.from(averages, ([key, value]) => ({ urban_rural_status: key, yValueDataString: value }));
     
     // Define color scale
@@ -40,14 +38,12 @@ class Barchart {
       .domain(vis.data.map(d => d.urban_rural_status))
       .range(['#ffe119', '#000075', '#3cb44b', '#e6194B'])
 
-    // Create the SVG element
     vis.svg = d3.select(vis.config.parentElement)
       .attr("width", vis.config.containerWidth + vis.config.margin.left + vis.config.margin.right)
       .attr("height", vis.config.containerHeight + vis.config.margin.top + vis.config.margin.bottom)
       .append("g")
       .attr("transform", `translate(${vis.config.margin.left},${vis.config.margin.top})`);
   
-    // Set up the scales for x and y axes
     const x = d3.scaleBand()
       .domain(averageArray.map(d => d.urban_rural_status))
       .range([0, vis.width])
@@ -58,7 +54,7 @@ class Barchart {
       .nice()
       .range([vis.height, 0]);
   
-    // Add x axis
+    // Add x-axis
     vis.svg.append("g")
       .attr("transform", `translate(0,${vis.height})`)
       .call(d3.axisBottom(x))
@@ -66,7 +62,7 @@ class Barchart {
         .attr("transform", "rotate(-45)")
         .style("text-anchor", "end");
   
-    // Add y axis
+    // Add y-axis
     vis.svg.append("g")
       .call(d3.axisLeft(y));
   
@@ -89,7 +85,7 @@ class Barchart {
       .attr("x", -vis.height / 2)
       .attr("y", -vis.config.margin.left + 10)
       .style("text-anchor", "middle")
-      .text("Average Percent Stroke");
+      .text("Average Value");
   
     // Add title
     vis.svg.append("text")
@@ -97,8 +93,6 @@ class Barchart {
       .attr("y", -vis.config.margin.top + 20)
       .attr("text-anchor", "middle")
       .style("font-size", "16px")
-      .text("Average Percent Stroke by Urban/Rural Status");
-          // Apply basic styling
-
+      .text("Average Value by Urban/Rural Status");
 }
 }
