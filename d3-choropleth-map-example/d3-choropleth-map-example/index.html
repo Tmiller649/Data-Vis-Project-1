@@ -114,11 +114,33 @@
                 <option value="percent_high_cholesterol">High Cholesterol Percentage</option>
             </select>
         </div>
-        <button type="button" id="GeneratePlot">Generate Scatterplot</button>
+        <button type="button" id="GeneratePlot">Generate Charts</button>
     </form>
-    
+    <div class="dropdownBar">
+        <label for="barchartAxis">Bar Chart Value</label>
+        <select name="barchartAxis" id="barchartAxis">
+            <option value="poverty_perc">Poverty Percentage</option>
+            <option value="median_household_income">Median household income</option>
+            <option value="education_less_than_high_school_percent">Didn't Graduate High School</option>
+            <option value="air_quality">Air Quality</option>
+            <option value="park_access">Percent With Park Acess</option>
+            <option value="percent_inactive">Physically Inactive Percentage</option>
+            <option value="percent_smoking">Smoking Percentage</option>
+            <option value="elderly_percentage">Elderly Percentage</option>
+            <option value="number_of_hospitals">Number of Hospitals</option>
+            <option value="number_of_primary_care_physicians">Number of Primary Care Physicians</option>
+            <option value="percent_no_heath_insurance">No Health Insurance Percentage</option>
+            <option value="percent_high_blood_pressure">High Blood Pressure Percentage</option>
+            <option value="percent_coronary_heart_disease">Coronary Heart Disease Percentage</option>
+            <option value="percent_stroke">Stroke Percentage</option>
+            <option value="percent_high_cholesterol">High Cholesterol Percentage</option>
+        </select>
+    </div>
+
 
     <svg class="scatterplot" id="scatterplot"></svg>
+    <svg class="barchart" id="barchart"></svg>
+    
     <!-- <svg id="barchart"></svg> -->
 
 

@@ -10,9 +10,9 @@ class Barchart {
     this.config = {
       parentElement: _config.parentElement,
       colorScale: _config.colorScale,
-      containerWidth: _config.containerWidth || 260,
-      containerHeight: _config.containerHeight || 300,
-      margin: _config.margin || {top: 25, right: 20, bottom: 20, left: 40},
+      containerWidth: _config.containerWidth || 600,
+      containerHeight: _config.containerHeight || 400,
+      margin: _config.margin || {top: 30, right: 30, bottom: 70, left: 60},
     }
     this.data = _data;
     this.initVis();
@@ -23,118 +23,83 @@ class Barchart {
    */
   initVis() {
     let vis = this;
-
-    // Calculate inner chart size. Margin specifies the space around the actual chart.
+    let yValueDataString = d3.select("#barchartAxis").node().value;
+    
     vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
     vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
 
-    // Initialize scales and axes
+  
+    // Process the data to calculate average percent_stroke for each urban_rural_status category
+    const averages = d3.rollup(this.data, v => d3.mean(v, d => d[yValueDataString]), d => d.urban_rural_status);
+
+    // Convert averages object to array for easier manipulation
+    const averageArray = Array.from(averages, ([key, value]) => ({ urban_rural_status: key, yValueDataString: value }));
     
-    // Initialize scales
-    vis.colorScale = d3.scaleOrdinal()
-        .range(['#D6EAF8', '#3498DB', '#1B4F72', '#7bc77e']) // light green to dark green
-        .domain(['Rural','Small City','Suburban', 'Urban']);
-    
-    // Important: we flip array elements in the y output range to position the rectangles correctly
-    vis.yScale = d3.scaleLinear()
-        .range([vis.height, 0]) 
+    // Define color scale
+    const colorScale = d3.scaleOrdinal()
+      .domain(vis.data.map(d => d.urban_rural_status))
+      .range(['#ffe119', '#000075', '#3cb44b', '#e6194B'])
 
-    vis.xScale = d3.scaleBand()
-        .range([0, vis.width])
-        .paddingInner(0.2);
-
-    vis.xAxis = d3.axisBottom(vis.xScale)
-        .ticks(['Rural','Small City','Suburban', 'Urban'])
-        .tickSizeOuter(0);
-
-    vis.yAxis = d3.axisLeft(vis.yScale)
-        .ticks(6)
-        .tickSizeOuter(0)
-
-    // Define size of SVG drawing area
+    // Create the SVG element
     vis.svg = d3.select(vis.config.parentElement)
-        .attr('width', vis.config.containerWidth)
-        .attr('height', vis.config.containerHeight);
+      .attr("width", vis.config.containerWidth + vis.config.margin.left + vis.config.margin.right)
+      .attr("height", vis.config.containerHeight + vis.config.margin.top + vis.config.margin.bottom)
+      .append("g")
+      .attr("transform", `translate(${vis.config.margin.left},${vis.config.margin.top})`);
+  
+    // Set up the scales for x and y axes
+    const x = d3.scaleBand()
+      .domain(averageArray.map(d => d.urban_rural_status))
+      .range([0, vis.width])
+      .padding(0.1);
+  
+    const y = d3.scaleLinear()
+      .domain([0, d3.max(averageArray, d => d.yValueDataString)])
+      .nice()
+      .range([vis.height, 0]);
+  
+    // Add x axis
+    vis.svg.append("g")
+      .attr("transform", `translate(0,${vis.height})`)
+      .call(d3.axisBottom(x))
+      .selectAll(".tick text")
+        .attr("transform", "rotate(-45)")
+        .style("text-anchor", "end");
+  
+    // Add y axis
+    vis.svg.append("g")
+      .call(d3.axisLeft(y));
+  
+    // Add bars
+    vis.svg.selectAll(".bar")
+      .data(averageArray)
+      .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", d => x(d.urban_rural_status))
+      .attr("y", d => y(d.yValueDataString))
+      .attr("width", x.bandwidth())
+      .attr("height",  d => vis.height - y(d.yValueDataString))
+      .attr('fill', d => colorScale(d.urban_rural_status));
 
-    // SVG Group containing the actual chart; D3 margin convention
-    vis.chart = vis.svg.append('g')
-        .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
-
-    // Append empty x-axis group and move it to the bottom of the chart
-    vis.xAxisG = vis.chart.append('g')
-        .attr('class', 'axis x-axis')
-        .attr('transform', `translate(0,${vis.height})`);
-    
-    // Append y-axis group 
-    vis.yAxisG = vis.chart.append('g')
-        .attr('class', 'axis y-axis');
-
-    // Append axis title
-    vis.svg.append('text')
-        .attr('class', 'axis-title')
-        .attr('x', 0)
-        .attr('y', 0)
-        .attr('dy', '.71em')
-        .text('Trails');
-  }
-
-  /**
-   * Prepare data and scales before we render it
-   */
-  updateVis() {
-    let vis = this;
-
-    // Prepare data: count number of trails in each difficulty category
-    // i.e. [{ key: 'easy', count: 10 }, {key: 'intermediate', ...
-    const aggregatedDataMap = d3.rollups(vis.data, v => v.length, d => d.urban_rural_status);
-    vis.aggregatedData = Array.from(aggregatedDataMap, ([key, count]) => ({ key, count }));
-
-    const orderedKeys = ['Rural','Small City','Suburban', 'Urban'];
-    vis.aggregatedData = vis.aggregatedData.sort((a,b) => {
-      return orderedKeys.indexOf(a.urban_rural_status) - orderedKeys.indexOf(b.urban_rural_status);
-    });
-
-    // Specificy accessor functions
-    vis.colorValue = d => d.urban_rural_status;
-    vis.xValue = d => d.urban_rural_status;
-    vis.yValue = d => d.poverty_perc;
-
-    // Set the scale input domains
-    vis.xScale.domain(vis.aggregatedData.map(vis.xValue));
-    vis.yScale.domain([0, d3.max(vis.aggregatedData, vis.yValue)]);
-
-    vis.renderVis();
-  }
-
-  /**
-   * Bind data to visual elements
-   */
-  renderVis() {
-    let vis = this;
-
-    // Add rectangles
-    const bars = vis.chart.selectAll('.bar')
-        .data(vis.aggregatedData, vis.xValue)
-      .join('rect')
-        .attr('class', 'bar')
-        .attr('x', d => vis.xScale(vis.xValue(d)))
-        .attr('width', vis.xScale.bandwidth())
-        .attr('height', d => vis.height - vis.yScale(vis.yValue(d)))
-        .attr('y', d => vis.yScale(vis.yValue(d)))
-        .attr('fill', d => vis.colorScale(vis.colorValue(d)))
-        // .on('click', function(event, d) {
-        //   const isActive = difficultyFilter.includes(d.key);
-        //   if (isActive) {
-        //     difficultyFilter = difficultyFilter.filter(f => f !== d.key); // Remove filter
-        //   } else {
-        //     difficultyFilter.push(d.key); // Append filter
-        //   }
-        //   filterData(); // Call global function to update scatter plot
-        //   d3.select(this).classed('active', !isActive); // Add class to style active filters with CSS
-        // });
-
-    // Update axes
-    vis.xAxisG.call(vis.xAxis);
-    vis.yAxisG.call(vis.yAxis);
-  }
+  
+    // Add y-axis label
+    vis.svg.append("text")
+      .attr("class", "axis-label")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -vis.height / 2)
+      .attr("y", -vis.config.margin.left + 10)
+      .style("text-anchor", "middle")
+      .text("Average Percent Stroke");
+  
+    // Add title
+    vis.svg.append("text")
+      .attr("x", vis.width / 2)
+      .attr("y", -vis.config.margin.top + 20)
+      .attr("text-anchor", "middle")
+      .style("font-size", "16px")
+      .text("Average Percent Stroke by Urban/Rural Status");
+          // Apply basic styling
+    vis.svg.selectAll(".bar")
+    .style("opacity", 0.7);
+}
 }

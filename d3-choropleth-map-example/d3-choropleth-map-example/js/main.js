@@ -46,12 +46,13 @@ Promise.all([
 
   choroplethMap1.initVis("poverty_perc", ['#cfe2f2', '#0d306b'])
   choroplethMap2.initVis("median_household_income", ['#f29d9d', '#6b0d13'])
+})
 .catch(error => console.error(error));
-});
 ///////////////////////////////////////////////
 d3.select('#GeneratePlot').on('click', function() {
   d3.selectAll("#scatterplot > *").remove();
-  let data, scatterplot;
+  d3.selectAll("#barchart > *").remove();
+  let data, scatterplot, barchart;
   d3.csv('data/national_health_data.csv')
   .then(_data => {
     data = _data;
@@ -72,7 +73,8 @@ d3.select('#GeneratePlot').on('click', function() {
       d.education_less_than_high_school_percent = +d.education_less_than_high_school_percent;
     });
     
-    scatterplot = new Scatterplot({ parentElement: '#scatterplot'}, data);
+    scatterplot = new Scatterplot({ parentElement: '#scatterplot'}, data)
+    barchart = new Barchart({parentElement: '#barchart'}, data)
   })
   .catch(error => console.error(error));
 

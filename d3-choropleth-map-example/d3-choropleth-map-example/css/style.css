@@ -30,20 +30,19 @@
     fill: orange;
 }
 
-.mapsContainer { 
-    width: 50%; 
-} 
-.mapContainer { 
-    float: left; 
-    width: 50%; 
-} 
-.map1 { 
-    margin-left: 50%; 
-} 
-.map2 { 
-    margin-left: 50%; 
+/* .mapsContainer {
+    border: 1px solid black;
+    margin: 1rem;
+    padding: 2rem;
+    text-align: center;
 }
-
+/* .mapContainer {
+    /* display: inline-block; 
+    border: 1px solid red;
+    vertical-align: middle;
+    height:400px;
+    float: left;
+} */ 
 
 
 #tooltip {
@@ -69,3 +68,11 @@
     stroke: black;
     stroke-width: 1px;
   }
+
+ /* Add some basic styling */
+   body {
+        font-family: Arial, sans-serif;
+      }
+      .axis-label {
+        font-size: 14px;
+      }

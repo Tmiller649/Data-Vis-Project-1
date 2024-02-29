@@ -11,7 +11,7 @@ class Scatterplot {
     // you might want to use getter and setter methods for individual attributes
     this.config = {
       parentElement: _config.parentElement,
-      containerWidth: _config.containerWidth || 500,
+      containerWidth: _config.containerWidth || 700,
       containerHeight: _config.containerHeight || 500,
       margin: _config.margin || {top: 25, right: 20, bottom: 20, left: 35},
       generate: _config.generate|| false
@@ -42,7 +42,7 @@ class Scatterplot {
 
     // Initialize scales
     vis.colorScale = d3.scaleOrdinal()
-        .range(['#ffe119', '#000075', '#3cb44b', '#e6194B']) //light blue to dark blue
+        .range(['#ffe119', '#000075', '#3cb44b', '#e6194B']) 
         .domain(['Rural','Small City','Suburban', 'Urban']);
         
 
