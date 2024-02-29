@@ -79,7 +79,7 @@ class Barchart {
       .attr("y", d => y(d.yValueDataString))
       .attr("width", x.bandwidth())
       .attr("height",  d => vis.height - y(d.yValueDataString))
-      .attr('fill', d => colorScale(d.urban_rural_status));
+      .attr('fill', d => colorScale(d.urban_rural_status))
 
   
     // Add y-axis label
@@ -99,7 +99,6 @@ class Barchart {
       .style("font-size", "16px")
       .text("Average Percent Stroke by Urban/Rural Status");
           // Apply basic styling
-    vis.svg.selectAll(".bar")
-    .style("opacity", 0.7);
+
 }
 }

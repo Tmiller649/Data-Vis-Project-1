@@ -8,6 +8,9 @@
 <body>
     <h1 text-align=center>Health in the USA Project</h1>
     <h2 text-align=center>By: Terrance Miller</h2>
+    <div class="source">
+        Source: Data from <a href="https://vancouvertrails.com/trails/">vancouvertrails.com</a>
+    </div>
 
     <!-- <div class="mapsContainer"> -->
         <div class="mapContainer">
@@ -67,13 +70,7 @@
 
 
 
-    <form class="Graph1">
-        <!-- <div class="GraphSelect">
-            <input type="radio" id="scatter" name="grphselect" value="Scatter Plot">
-            <label for="scatter">Scatter Plot</label><br>
-            <input type="radio" id="bar" name="grphselect" value="Bar Graph">
-            <label for="bar">Bar Graph</label><br>
-        </div> -->
+    <form class="ScatterGraph">
         <div class="dropdownX">
             <label for="Xaxis">X-Axis</label>
             <select name="Xaxis" id="Xaxis">
@@ -114,7 +111,8 @@
                 <option value="percent_high_cholesterol">High Cholesterol Percentage</option>
             </select>
         </div>
-        <button type="button" id="GeneratePlot">Generate Charts</button>
+        <button type="button" id="GeneratePlot">Generate Charts</button>        
+        <svg class="scatterplot" id="scatterplot"></svg>
     </form>
     <div class="dropdownBar">
         <label for="barchartAxis">Bar Chart Value</label>
@@ -135,11 +133,11 @@
             <option value="percent_stroke">Stroke Percentage</option>
             <option value="percent_high_cholesterol">High Cholesterol Percentage</option>
         </select>
+        <svg class="barchart" id="barchart"></svg>
     </div>
 
 
-    <svg class="scatterplot" id="scatterplot"></svg>
-    <svg class="barchart" id="barchart"></svg>
+
     
     <!-- <svg id="barchart"></svg> -->
 
